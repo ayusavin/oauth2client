@@ -71,7 +71,7 @@ def oauth_required(decorated_function=None, scopes=None, **decorator_kwargs):
         @wraps(wrapped_function)
         def required_wrapper(request, *args, **kwargs):
             if not (django_util.oauth2_settings.storage_model is None or
-                    request.user.is_authenticated()):
+                    request.user.is_authenticated):
                 redirect_str = '{0}?next={1}'.format(
                     django.conf.settings.LOGIN_URL,
                     parse.quote(request.path))

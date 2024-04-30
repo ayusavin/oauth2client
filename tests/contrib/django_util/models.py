@@ -21,5 +21,5 @@ from oauth2client.contrib.django_util.models import CredentialsField
 
 
 class CredentialsModel(models.Model):
-    user_id = models.OneToOneField(User)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     credentials = CredentialsField()

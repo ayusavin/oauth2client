@@ -18,7 +18,7 @@ import copy
 import unittest
 
 import django.conf
-from django.conf.urls import include, url
+from django.urls import include, path
 from django.contrib.auth import models as django_models
 from django.core import exceptions
 import mock
@@ -31,7 +31,7 @@ from tests.contrib import django_util as tests_django_util
 
 
 urlpatterns = [
-    url(r'^oauth2/', include(site.urls))
+    path('oauth2/', include(site.urls))
 ]
 
 

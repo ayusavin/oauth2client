@@ -26,7 +26,7 @@ import os
 from django import http
 from django import shortcuts
 from django.conf import settings
-from django.core import urlresolvers
+from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import html
 import jsonpickle
@@ -69,7 +69,7 @@ def _make_flow(request, scopes, return_url=None):
         scope=scopes,
         state=state,
         redirect_uri=request.build_absolute_uri(
-            urlresolvers.reverse("google_oauth:callback")))
+            reverse("google_oauth:callback")))
 
     flow_key = _FLOW_KEY.format(csrf_token)
     request.session[flow_key] = jsonpickle.encode(flow)
@@ -173,12 +173,12 @@ def oauth2_authorize(request):
     """
     return_url = request.GET.get('return_url', None)
     if not return_url:
-        return_url = request.META.get('HTTP_REFERER', '/')
+        return_url = request.headers.get('referer', '/')
 
     scopes = request.GET.getlist('scopes', django_util.oauth2_settings.scopes)
     # Model storage (but not session storage) requires a logged in user
     if django_util.oauth2_settings.storage_model:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return redirect('{0}?next={1}'.format(
                 settings.LOGIN_URL, parse.quote(request.get_full_path())))
         # This checks for the case where we ended up here because of a logged
